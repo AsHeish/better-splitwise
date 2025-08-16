@@ -15,8 +15,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello World")
-
 	// Set up CORS
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000", "https://go-splitwise.vercel.app"},
@@ -41,6 +39,6 @@ func main() {
 		port = "4000"
 	}
 
-	fmt.Println("Listening at port 4000...")
+	fmt.Printf("Listening on port %s...\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, handler))
 }

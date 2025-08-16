@@ -486,6 +486,8 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	query := `INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING user_id`
 	err = db.QueryRow(query, user.Name, user.Email, string(hashedPassword)).Scan(&user.UserID)
 	if err != nil {
+		log.Printf("RegisterUser DB error: %v", err)
+
 		if strings.Contains(err.Error(), "duplicate key") {
 			jsonError(w, "This email address is already registered. Please use a different email or login to your account.", http.StatusInternalServerError)
 		} else {
@@ -512,14 +514,14 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &http.Cookie{
-		Name:     "session_token",
-		Value:    sessionToken,
-		Expires:  expiresAt,
-		HttpOnly: true,
-		Secure:   true,
-		Path:     "/",
-		SameSite: http.SameSiteNoneMode,
-		Partitioned:true,
+		Name:        "session_token",
+		Value:       sessionToken,
+		Expires:     expiresAt,
+		HttpOnly:    true,
+		Secure:      true,
+		Path:        "/",
+		SameSite:    http.SameSiteNoneMode,
+		Partitioned: true,
 	})
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(registeredUser)
@@ -569,14 +571,14 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &http.Cookie{
-		Name:     "session_token",
-		Value:    sessionToken,
-		Expires:  expiresAt,
-		HttpOnly: true,
-		Secure:   true,
-		Path:     "/",
-		SameSite: http.SameSiteNoneMode,
-		Partitioned:true,
+		Name:        "session_token",
+		Value:       sessionToken,
+		Expires:     expiresAt,
+		HttpOnly:    true,
+		Secure:      true,
+		Path:        "/",
+		SameSite:    http.SameSiteNoneMode,
+		Partitioned: true,
 	})
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(registeredUser)
@@ -639,14 +641,14 @@ func HandleGoogleAuth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &http.Cookie{
-		Name:     "session_token",
-		Value:    sessionToken,
-		Expires:  expiresAt,
-		HttpOnly: true,
-		Secure:   true,
-		Path:     "/",
-		SameSite: http.SameSiteNoneMode,
-		Partitioned:true,
+		Name:        "session_token",
+		Value:       sessionToken,
+		Expires:     expiresAt,
+		HttpOnly:    true,
+		Secure:      true,
+		Path:        "/",
+		SameSite:    http.SameSiteNoneMode,
+		Partitioned: true,
 	})
 
 	user.Email = email
@@ -662,14 +664,14 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 	// Remove the cookie
 	http.SetCookie(w, &http.Cookie{
-		Name:     "session_token",
-		Value:    "",
-		Expires:  time.Now().Add(-time.Hour),
-		HttpOnly: true,
-		Secure:   true,
-		Path:     "/",
-		SameSite: http.SameSiteNoneMode,
-		Partitioned:true,
+		Name:        "session_token",
+		Value:       "",
+		Expires:     time.Now().Add(-time.Hour),
+		HttpOnly:    true,
+		Secure:      true,
+		Path:        "/",
+		SameSite:    http.SameSiteNoneMode,
+		Partitioned: true,
 	})
 
 	w.Header().Set("Content-Type", "application/json")
@@ -1827,8 +1829,7 @@ func TriggerMonthlyReminders(w http.ResponseWriter, r *http.Request) {
 }
 
 func Ping(w http.ResponseWriter, r *http.Request) {
-     w.Header().Set("Content-Type", "application/json")
-     w.WriteHeader(http.StatusOK)
-    fmt.Fprintf(w, `{"message":"Backend is awake"}`)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, `{"message":"Backend is awake"}`)
 }
-
