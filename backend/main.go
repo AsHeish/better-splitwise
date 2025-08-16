@@ -17,7 +17,7 @@ import (
 func main() {
 	// Set up CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000", "https://better-splitwise-xi.vercel.app"},
+		AllowedOrigins:   []string{"http://localhost:3000", "https://better-splitwise-three.vercel.app"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type", "X-Auth-Token"},
 		AllowCredentials: true,
